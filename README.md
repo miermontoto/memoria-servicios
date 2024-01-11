@@ -1,4 +1,6 @@
-# latexTemplate
-Plantilla LaTeX personal para trabajos universitarios.
+# memoria-servicios
+Memoria de prácticas de laboratorio de Ingeniería de Servicios. EPI Gijón 23-24.
 
-Basada en la [plantilla para TFM/TFG de la EPI](https://www.overleaf.com/latex/templates/tfm-uniovi-epigijon/qpknqgmdkbxp), hecha por Enrique Lara Renuncio.
+## Integrantes del grupo
+- [Juan Mier](https://github.com/miermontoto)
+- [Alejandro Rodríguez](https://github.com/alexZeLoCO)
