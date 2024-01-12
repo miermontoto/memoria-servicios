@@ -1,106 +1,105 @@
 \Chapter{Servicios de acceso remoto y transferencia}{}
 
-\section{Acceso Remoto}
-
+\section{Acceso remoto}
 \subsection{Ejercicio 1}
-
 El ejercicio solicita que se escriba un programa \lstinline{telnet1_ejemplo.py}
 que muestre por pantalla el resultado de ejecutar la orden \lstinline{ls} en el
-directorio \lstinline{/home}.
+directorio \Verb#/home#.
 
 \begin{lstlisting}[language=Python]
-import getpass
-import telnetlib
+    import getpass
+    import telnetlib
 
-encoding = 'utf8'
-HOST = "localhost"
-user = input("Enter your remote account: ")
-password = getpass.getpass()
+    encoding = 'utf8'
+    HOST = "localhost"
+    user = input("Enter your remote account: ")
+    password = getpass.getpass()
 
-tn = telnetlib.Telnet(HOST)
+    tn = telnetlib.Telnet(HOST)
 
-tn.read_until(b"login: ")
-tn.write(user.encode(encoding) + b"\n")
-if password:
-    tn.read_until(b"Password: ")
-    tn.write(password.encode(encoding) + b"\n")
+    tn.read_until(b"login: ")
+    tn.write(user.encode(encoding) + b"\n")
+    if password:
+        tn.read_until(b"Password: ")
+        tn.write(password.encode(encoding) + b"\n")
 
-tn.write(b"cd /home\n")
-tn.write(b"ls\n")
-tn.write(b"exit\n")
+    tn.write(b"cd /home\n")
+    tn.write(b"ls\n")
+    tn.write(b"exit\n")
 
-print(tn.read_all().decode(encoding))
+    print(tn.read_all().decode(encoding))
 \end{lstlisting}
 
-El ejercicio solicita posteriormente que se mejore el programa
-(\lstinline{telnet1_ejemplo_mejorado.py}) para que omita el mensaje de bienvenida del sistema.
+El ejercicio solicita posteriormente que se mejore el programa \\
+(\lstinline{telnet1_ejemplo_mejorado.py}) para que omita el mensaje de bienvenida
+del sistema.
 
 \begin{lstlisting}[language=Python]
-import getpass
-import telnetlib
+    import getpass
+    import telnetlib
 
-encoding = 'utf8'
-HOST = "localhost"
-user = input("Enter your remote account: ")
-password = getpass.getpass()
+    encoding = 'utf8'
+    HOST = "localhost"
+    user = input("Enter your remote account: ")
+    password = getpass.getpass()
 
-tn = telnetlib.Telnet(HOST)
+    tn = telnetlib.Telnet(HOST)
 
-tn.read_until(b"login: ")
-tn.write(user.encode(encoding) + b"\n")
-if password:
-    tn.read_until(b"Password: ")
-    tn.write(password.encode(encoding) + b"\n")
+    tn.read_until(b"login: ")
+    tn.write(user.encode(encoding) + b"\n")
+    if password:
+        tn.read_until(b"Password: ")
+        tn.write(password.encode(encoding) + b"\n")
 
-tn.read_until("$".encode(encoding))
+    tn.read_until("$".encode(encoding))
 
-tn.write(b"cd /home\n")
-tn.write(b"ls\n")
-tn.write(b"exit\n")
+    tn.write(b"cd /home\n")
+    tn.write(b"ls\n")
+    tn.write(b"exit\n")
 
-print(tn.read_all().decode(encoding))
+    print(tn.read_all().decode(encoding))
 \end{lstlisting}
 
 \subsection{Ejercicio 2}
 
 El ejercicio solicita escribir un programa \lstinline{telnet2_lanza_servidor.py}
-que lance un programa de la \hyperref[Servicios básicos]{Sesión 1}.
+que lance un programa de la sesión \nameref{Servicios básicos}.
 
 \begin{lstlisting}[language=Python]
-import getpass
-import telnetlib
-import time
+    import getpass
+    import telnetlib
+    import time
 
-encoding = 'utf8'
-HOST = "localhost"
-user = input("Enter your remote account: ")
-password = getpass.getpass()
+    encoding = 'utf8'
+    HOST = "localhost"
+    user = input("Enter your remote account: ")
+    password = getpass.getpass()
 
-tn = telnetlib.Telnet(HOST)
+    tn = telnetlib.Telnet(HOST)
 
-tn.read_until(b"login: ")
-tn.write(user.encode(encoding) + b"\n")
-if password:
-    tn.read_until(b"Password: ")
-    tn.write(password.encode(encoding) + b"\n")
+    tn.read_until(b"login: ")
+    tn.write(user.encode(encoding) + b"\n")
+    if password:
+        tn.read_until(b"Password: ")
+        tn.write(password.encode(encoding) + b"\n")
 
-tn.read_until("$".encode(encoding))
+    tn.read_until("$".encode(encoding))
 
-tn.write(b"ps -ef\n")
+    tn.write(b"ps -ef\n")
 
-output = tn.read_until("$".encode(encoding)).decode(encoding)
+    output = tn.read_until("$".encode(encoding)).decode(encoding)
 
-print("udp_servidor3_con_ok.py" in output)
+    print("udp_servidor3_con_ok.py" in output)
 
-if ("udp_servidor3_con_ok.py" in output):
-    print("El servidor ya esta en ejecucion")
-    exit(0)
+    if ("udp_servidor3_con_ok.py" in output):
+        print("El servidor ya esta en ejecucion")
+        exit(0)
 
-tn.write(f"nohup python3 udp_servidor3_con_ok.py &\n".encode(encoding))
-time.sleep(1)
-tn.write(b"exit\n")
+    tn.write(f"nohup python3 udp_servidor3_con_ok.py &\n".encode(encoding))
+    time.sleep(1)
+    tn.write(b"exit\n")
 
-print(tn.read_all().decode(encoding))
+    print(tn.read_all().decode(encoding))
 \end{lstlisting}
 
 \subsection{Ejercicio 3}
@@ -114,48 +113,47 @@ El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_mal.py
 para que incluya la línea \lstinline{client.set_missing_host_key_policy(paramiko.AutoAddPolicy())}
 (resultando en el \lstinline{ssh_ejemplo_inseguro.py}).
 
-Introducimos la línea en cuestión entre la creación del cliente paramiko
+Introducimos la línea en cuestión entre la creación del cliente \Verb#paramiko#
 y la conexión con el servidor ssh.
 
 \begin{lstlisting}[language=Python]
-import paramiko
-import time
-from getpass import getpass
+    import paramiko
+    import time
+    from getpass import getpass
 
-user: str = input("Introduzca nombre de usuario: ")
-password: str = getpass()
+    user: str = input("Introduzca nombre de usuario: ")
+    password: str = getpass()
 
-client = paramiko.SSHClient()
-client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-client.connect('localhost', username=user, password=password)
-print("Conectado!!")
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect('localhost', username=user, password=password)
+    print("Conectado!!")
 
 
-# Ejecutar comando remoto, redireccionando sus salidas
-stdin, stdout, stderr = client.exec_command('ls')
+    # Ejecutar comando remoto, redireccionando sus salidas
+    stdin, stdout, stderr = client.exec_command('ls')
 
-# Mostrar resultado de la ejecución (rstrip quita los retornos de carro)
-for line in stdout:
-    print(line.rstrip())
-time.sleep(1)  # Dar tiempo a que se vacie el buffer
-client.close()
+    # Mostrar resultado de la ejecución (rstrip quita los retornos de carro)
+    for line in stdout:
+        print(line.rstrip())
+    time.sleep(1)  # Dar tiempo a que se vacie el buffer
+    client.close()
 \end{lstlisting}
 
 \subsection{Ejercicio 9}
-
 El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_inseguro.py}
-para que el cliente utilice la \lstinline{WarningPolicy}.
+para que el cliente utilice la \Verb#WarningPolicy#.
 
 Modificamos la política de la línea introducida en el ejercicio anterior y
 obtenemos el fichero \lstinline{ssh_ejemplo_inseguro2.py}.
 
 \begin{lstlisting}[language=Python]
-# ... El resto del programa es igual al anterior
-client = paramiko.SSHClient()
-client.set_missing_host_key_policy(paramiko.WarningPolicy())
-client.connect('localhost', username=user, password=password)
-print("Conectado!!")
-# ... El resto del programa es igual al anterior
+    # ... El resto del programa es igual al anterior
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.WarningPolicy())
+    client.connect('localhost', username=user, password=password)
+    print("Conectado!!")
+    # ... El resto del programa es igual al anterior
 \end{lstlisting}
 
 \subsection{Ejercicio 10}
@@ -164,20 +162,20 @@ El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_insegu
 eliminando la línea añadida previamente e insertando dos líneas nuevas para asegurar la conexión.
 
 \begin{lstlisting}[language=Python]
-import paramiko
-import time
-import base64
-from getpass import getpass
+    import paramiko
+    import time
+    import base64
+    from getpass import getpass
 
-# ... El resto del programa es igual al anterior
+    # ... El resto del programa es igual al anterior
 
-client = paramiko.SSHClient()
-key = paramiko.Ed25519Key(data=base64.decodestring(b'pubkey')) # See /etc/ssh/
-client.get_host_keys().add('localhost', 'ssh-ed25519', key)
-client.connect('localhost', username=user, password=password)
-print("Conectado!!")
+    client = paramiko.SSHClient()
+    key = paramiko.Ed25519Key(data=base64.decodestring(b'pubkey')) # See /etc/ssh/
+    client.get_host_keys().add('localhost', 'ssh-ed25519', key)
+    client.connect('localhost', username=user, password=password)
+    print("Conectado!!")
 
-# ... El resto del programa es igual al anterior
+    # ... El resto del programa es igual al anterior
 \end{lstlisting}
 
 \subsection{Ejercicio 11}
@@ -186,22 +184,20 @@ El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_seguro
 para que sea posible conectarse al ordenador del compañero.
 
 \begin{lstlisting}[language=Python]
+    # ... El resto del programa es igual al anterior
 
-# ... El resto del programa es igual al anterior
+    host: str = input("Introduzca la dirección del host a conectarse: ")
 
-host: str = input("Introduzca la dirección del host a conectarse: ")
+    client = paramiko.SSHClient()
+    key = paramiko.Ed25519Key(data=base64.decodestring(b'pubkey')) # See /etc/ssh/
+    client.get_host_keys().add('localhost', 'ssh-ed25519', key)
+    client.connect(host, username=user, password=password)
+    print("Conectado!!")
 
-client = paramiko.SSHClient()
-key = paramiko.Ed25519Key(data=base64.decodestring(b'pubkey')) # See /etc/ssh/
-client.get_host_keys().add('localhost', 'ssh-ed25519', key)
-client.connect(host, username=user, password=password)
-print("Conectado!!")
-
-# ... El resto del programa es igual al anterior
+    # ... El resto del programa es igual al anterior
 \end{lstlisting}
 
 \section{Transferencia de Archivos}
-
 \subsection{Ejercicio 12}
 \subsection{Ejercicio 13}
 \subsection{Ejercicio 14}
