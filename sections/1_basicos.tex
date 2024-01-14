@@ -1,5 +1,14 @@
 \chapter{Servicios básicos: UDP y TCP}\label{chap:1}
 \section{Programación de red: UDP}
+
+En esta sesión se estudia el desarrollo de servicios UDP.
+A lo largo de esta sesión, se utilizan 2 programas: Un cliente y un servidor.
+Los distintos ejercicios muestran mejoras a realizar en ambos programas
+para fortalecer la robustez de la comunicación.
+
+Ya que muchos ejercicios son parecidos en el código y salida,
+puede que en algunos casos sólo se haga una mención a la mejora implementada.
+
 \subsection{Módulos de ayuda}
 Para esta práctica, se desarrollan módulos de Python que faciliten las tareas básicas,
 como lecturas de hosts y puertos por argumentos: \\
@@ -15,313 +24,96 @@ como lecturas de hosts y puertos por argumentos: \\
 	\captionof{figure}{Estructura del módulo de ayuda ``ips\_argv.py''}\label{fig:1/code2}
 \end{minipage}
 
-\subsection{Ejercicio 1}
-
-El ejercicio solicita que se escriba un servidor que escuche en el puerto indicado por parámetros
-o en el 9999 si no se indica ninguno.
-
-El servidor repetirá lo que envien los clientes que se conecten a él.
-El cliente se conecta con el servidor y permite al usuario introducir texto que es enviado por el socket.
-El cliente finaliza cuando se envía la cadena 'FIN' (esta no se pasa al servidor por el socket).
-
-\subsubsection{udp\_servidor1.py}
-
-\begin{lstlisting}[language=Python]
-import socket
-import sys
-
-argc: int = len(sys.argv)
-port: int = int(sys.argv[1]) if argc >= 2 else 9999
-
-sock: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(("", port))
-
-print(f"Socket is bind for any address on port {port}")
-
-while (True):
-    data, source = sock.recvfrom(1024)
-    print(f"Received {data.decode('UTF-8')} from {source}")
-sock.close()
-\end{lstlisting}
-
-\subsubsection{udp\_cliente1.py}
-
-\begin{lstlisting}[language=Python]
-import socket
-import sys
-
-argc: int = len(sys.argv)
-addr: str = sys.argv[1] if argc >= 2 else 'localhost'
-port: int = int(sys.argv[2]) if argc >= 3 else 9999
-
-sock: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-print(f"Socket is ready to send to addr {addr} on port {port}")
-data: str = ""
-
-while (data != 'FIN'):
-    data = input("Enter data: ")
-    if (data != 'FIN'):
-        sock.sendto(data.encode('UTF-8'), (addr, port))
-\end{lstlisting}
-
-\subsection{Ejercicio 2}
-
-\subsubsection{udp\_servidor2\_simula\_perdidas.py}
-
-El ejercicio solicita que se modifique el programa del servidor para que simule una pérdida de paquetes
-en el 50\percentsign\ de los casos.
-
-En caso de perder un paquete, el servidor imprime por pantalla un mensaje.
-
-\begin{lstlisting}[language=Python]
-# ... El inicio del programa es igual al anterior
-while (True):
-    data, source = sock.recvfrom(1024)
-    if (random.randint(0, 1)):
-        print(f"Simulating packet loss of {data.decode('UTF-8')} from {source}")
-    else:
-        print(f"Received {data.decode('UTF-8')} from {source}")
-\end{lstlisting}
-
-\subsubsection{udp\_numera2\_numera\_mensajes.py}
-
-El ejercicio solicita que se modifique el programa del cliente para que concatene un número al mensaje.
-El número comienza en 1 y se incrementa por cada mensaje que se envía.
-
-\begin{lstlisting}[language=Python]
-# ... El inicio del programa es igual al anterior
-data: str = ''
-idx: int = 1
-while (data != 'FIN'):
-    data = input('Enter data: ')
-    if (data != 'FIN'):
-        sock.sendto((f"{idx}: {data}").encode('UTF-8'), (addr, port))
-    idx+=1
-\end{lstlisting}
-
-\subsubsection{Comprobación}
-
-Esta es la salida del servidor:
-
-\begin{lstlisting}
-$ python3 udp\_servidor2\_simula\_perdidas.py
-Socket is bind for any address on port 9999
-Simulating packet loss of 1: Hi there, sending first message! from ('127.0.0.1', 33252)
-Simulating packet loss of 2: Are you getting my messages?? from ('127.0.0.1', 33252)
-Received 3: Hello there? from ('127.0.0.1', 33252)
-Received 4: There you are! from ('127.0.0.1', 33252)
-Received 5: See you later! from ('127.0.0.1', 33252)
-\end{lstlisting}
-
-Esta es la salida del cliente:
-
-\begin{lstlisting}
-$ python3 udp_cliente2_numera_mensajes.py
-Socket is ready to send to addr localhost on port 9999
-Enter data: Hi there, sending first message!
-Enter data: Are you getting my messages??
-Enter data: Hello there?
-Enter data: There you are!
-Enter data: See you later!
-Enter data: FIN
-\end{lstlisting}
-
-\subsection{Ejercicio 3}
-
-\subsubsection{udp\_servidor3\_con\_ok.py}
-
-El ejercicio solicita que se modifique el programa del servidor para que envíe un mensaje al cliente
-cuando el mensaje es recibido con éxito (cuando no se pierde).
-
-\begin{lstlisting}[language=Python]
-# ... El inicio del programa es igual al anterior
-while (True):
-    data, source = sock.recvfrom(1024)
-    if (random.randint(0, 1)):
-        print(f"Simulating packet loss of {data.decode('UTF-8')} from {source}")
-    else:
-        print(f"Received {data.decode('UTF-8')} from {source}")
-        sock.sendto("OK".encode('UTF-8'), source)
-\end{lstlisting}
-
-\subsubsection{udp\_cliente3\_espera\_ok.py}
-
-El ejercicio solicita que se modifique el programa del cliente para que espere una respuesta del servidor
-tras haberle enviado un mensaje.
-
-El cliente esperará una cantidad de tiempo estática a la respuesta del servidor, si no la recibe o
-no es la respuesta esperada ('OK') mostrará un mensaje.
-
-\begin{lstlisting}[language=Python]
-# ... El inicio del programa es igual al anterior
-data: str = ''
-idx: int = 1
-while (data != 'FIN'):
-    data = input('Enter data: ')
-    if (data != 'FIN'):
-        sock.sendto((f"{idx}: {data}").encode('UTF-8'), (addr, port))
-        sock.settimeout(0.1)
-        try:
-            data, source = sock.recvfrom(1024)
-            data = data.decode('UTF-8')
-            if (data == 'OK'):
-                print("Confirmation received from server")
-            else:
-                print(f"Malformed confirmation from server received ({data})")
-        except socket.timeout:
-            print("ERR. No response was received from server")
-        except:
-            raise
-    idx+=1
-\end{lstlisting}
-
-\subsection{Ejercicio 4}
-
-\subsubsection{udp\_cliente4\_reintenta.py}
-
-El ejercicio solicita que se modifique el programa del cliente para que reintente el envío del mensaje
-si no ha recibido una respuesta del servidor, incrementando el tiempo de espera en cada intento.
-
-En caso que el tiempo de espera exceda los 2 segundos, el programa terminará.
-En caso que el programa reciba la respuesta, continuará su curso.
-
-\begin{lstlisting}[language=Python]
-# ... El inicio del programa es igual al anterior
-data: str = ''
-idx: int = 1
-while (data != 'FIN'):
-    data = input('Enter data: ')
-    if (data != 'FIN'):
-        success: bool = False
-        timeout = 0.1
-        while (not success or timeout <= 2.0):
-            sock.sendto((f"{idx}: {data}").encode('UTF-8'), (addr, port))
-            sock.settimeout(timeout)
-            try:
-                data, source = sock.recvfrom(1024)
-                data = data.decode('UTF-8')
-                if (data == 'OK'):
-                    print("Confirmation received from server")
-                    success = True
-                else:
-                    print(f"Malformed confirmation from server received ({data})")
-            except socket.timeout:
-                print("ERR. No response was received from server")
-                sys.exit(0)
-            except:
-                raise
-            timeout *= 2
-    idx+=1
-\end{lstlisting}
-
-\subsubsection{Comprobación}
-
-\subsection{Ejercicio 6}
-
-\subsubsection{udp\_servidor6\_broadcast.py}
-
-El ejercicio solicita que se modifique el programa del servidor para que permita recibir
-mensajes de broadcast.
-
-Si recibe el mensaje "BUSCANDO HOLA", responderá a esa IP con el mensaje "IMPLEMENTO HOLA".
-Si recibe el mensaje "HOLA", responderá a esa IP con el mensaje "HOLA: \{IP\}".
-
-\begin{lstlisting}[language=Python]
-import socket
-import sys
-
-argc: int = len(sys.argv)
-addr: str = ''
-port: int = 12345
-
-sock: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-
-print(f"Socket is bind for addr {addr} on port {port}")
-sock.bind((addr, port))
-
-while (True):
-    data, source = sock.recvfrom(1024)
-    data = data.decode('UTF-8')
-    print(f"Received {data} from {source}")
-    if ("BUSCANDO HOLA" in data):
-        sock.sendto("IMPLEMENTO HOLA".encode('UTF-8'), source)
-    elif ("HOLA" in data):
-        sock.sendto((f"HOLA: {source[0]}").encode('UTF-8'), source)
-\end{lstlisting}
-
-\subsubsection{udp\_cliente6\_broadcast.py}
-
-El ejercicio solicita que se modifique el programa del cliente para que pueda enviar mensajes
-de broadcast.
-
-Enviará un mensaje "BUSCANDO HOLA" a broadcast, en busca del servidor que implemente este servicio.
-Si existe un servidor que lo implemente, el cliente recibirá una respuesta.
-El cliente utilizará la dirección IP de esa respuesta para enviar un mensaje "HOLA" a ese servidor.
-El servidor responderá y el cliente mostrará su respuesta por la pantalla.
-En caso que el cliente reciba varias respuestas de servidores que implementen HOLA, utilizará al primero.
-
-\begin{lstlisting}[language=Python]
-import socket
-import sys
-
-addr: str = '172.18.0.128' # put bcast addr here
-port: int = 12345
-
-sock: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-
-sock.sendto("BUSCANDO HOLA".encode('UTF-8'), (addr, port))
-
-addrs = []
-is_timeout_alive: bool = True
-while (is_timeout_alive):
-    sock.settimeout(5)
-    try:
-        data, source = sock.recvfrom(1024)
-        data = data.decode('UTF-8')
-        print(f"Received from {source} data {data}")
-        if ("IMPLEMENTO HOLA" in data):
-            addrs.append(source)
-    except socket.timeout:
-        print("Timeout")
-        is_timeout_alive: bool = False
-    except:
-        raise
-
-addr = addrs[0]
-print(f"Sending to {addr} data HOLA")
-sock.sendto("HOLA".encode('UTF-8'), addr)
-data, source = sock.recvfrom(1024)
-print(f"Received from {source} data {data.decode('UTF-8')}")
-\end{lstlisting}
-
-\subsubsection{Comprobación}
-
-\subsection{Ejercicio 7}
-
-El ejercicio solicita que se utilicen los programas escritos previamente en Docker.
-Se lanzarán 3 contenedores Docker con el servidor \lstinline{udp\_servidor6\_broadcast.py}
-y se lanzará un contenedor Docker con el cliente \lstinline{udp\_cliente6\_broadcast.py}.
-
-El ejercicio indica también que se escriban dos ficheros \lstinline{shell}
-que lancen estos contenedores Docker (un \lstinline{shell} para los servidores y otro para el cliente).
-
-\begin{lstlisting}[language=bash]
-#! /bin/sh
-docker run -it -d --name cliente --network pruebas -v $(pwd):/app python:3.7 python /app/udp_cliente6_broadcast.py
-\end{lstlisting}
-
-\begin{lstlisting}[language=bash]
-#! /bin/sh
-docker run -d --name servidor_0 --network pruebas -v $(pwd):/app python:3.7 python /app/udp_servidor6_broadcast.py
-docker run -d --name servidor_1 --network pruebas -v $(pwd):/app python:3.7 python /app/udp_servidor6_broadcast.py
-docker run -d --name servidor_2 --network pruebas -v $(pwd):/app python:3.7 python /app/udp_servidor6_broadcast.py
-\end{lstlisting}
+\subsection{UDP}
+
+Inicialmente se desarollan un servidor y un cliente simples.
+El servidor se encuentra a la espera de mensajes de clientes
+y el cliente se conecta a un servidor (cuya IP es conocida de antemano)
+al que le envía un mensaje.
+Cuando el servidor recibe un mensaje, lo imprime por pantalla.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/UDP/1.png}
+	\captionof{figure}{Cliente y Servidor Simples}\label{fig:1/1}
+\end{minipage}
+
+A continuación se modifica el código del servidor para que
+simule la pérdida de algunos mensajes enviados por los clientes.
+Para ello, se utiliza un número aleatorio de forma que se pierdan
+el 50\percentsign de los paquetes.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/UDP/2.png}
+	\captionof{figure}{El servidor simula pérdidas}\label{fig:1/2}
+\end{minipage}
+
+El cliente es modificado de forma que al enviar un mensaje,
+lo etiquete con un índice.
+El índice es simplemente un contador que se incrementa en uno
+por cada mensaje que se envía.
+
+Se realiza una modificación en el servidor de forma que envíe
+un OK al cliente cuando el mensaje no se ha perdido
+(el 50\percentsign de las veces).
+
+El cliente ahora espera un mensaje con OK del servidor.
+Sin embargo, no puede quedarse esperando constantemente ya que esto
+dejaría al cliente atascado si se pierde el paquete.
+Se implementa un timeout para que esto no suceda.
+
+A continuación, el cliente es modificado para que si el timeout caduca
+se intente reenviar el mensaje.
+El timeout se verá incrementado con cada reintento para combatir la posible
+congestión de la red hasta un máximo de 2 segundos, cuando el cliente
+se dará por vencido.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/UDP/3.png}
+	\captionof{figure}{El cliente reintenta el envío si no recibe un OK del servidor}\label{fig:1/3}
+\end{minipage}
+
+\subsection{Broadcast en UDP}
+
+Se utilizan el cliente y servidor anteriores para implementar un servicio nuevo "HOLA".
+Un cliente que quiera utilizar este servicio deberá conectarse a un servidor que implemente
+el servicio HOLA.
+No obstante, en este caso se tiene en cuenta que puede que el cliente no conozca la dirección
+IP del servidor (o servidores) que implementan este servicio.
+Para resolver este problema, se utilizan mensajes en broadcast.
+Un cliente que quiera interactuar con el servicio deberá enviar un mensaje a broadcast
+preguntando por servidores que implementen HOLA.
+Si un servidor que imlementa HOLA recibe este mensaje broadcast, deberá responder al cliente.
+El cliente, al recibir la respuesta del servidor, conoce su dirección IP y podrá utilizar su servicio.
+En caso de recibir múltiples respuestas de varios servidores
+el cliente utilizará al primer servidor que responda.
+
+\begin{notebox}
+    En este apartado no se muestran capturas de pantalla de la ejecución.
+    Esto se debe a que este mismo ejercicio se ejecuta utilizando Docker en el siguiente apartado.
+    Ver el siguiente apartado para las capturas de pantalla de este ejercicio.
+\end{notebox}
+
+\subsection{Despliegue con Docker}
+
+Este apartado consiste en migrar el servicio HOLA creado anteriormente a un contenedor Docker.
+Se indica que creemos 3 contenedores Docker de servidores que implementan HOLA
+y un contenedor de un cliente en busca de un servidor que implemente HOLA.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/UDP/4.png}
+	\captionof{figure}{Servicio HOLA}\label{fig:1/2}
+\end{minipage}
 
 \section{Programación de red: TCP}
+
+Esta sesión trata el protocolo TCP.
+En particular, se centra en estudiar las distintas estrategias a la hora
+de conocer el fin del mensaje.
+
 \subsection{Módulos de ayuda}
 Se reutilizan los módulos de la sesión anterior (\ref{fig:1/code1}~y~\ref{fig:1/code2}) para
 realizar todos los ejercicios. Además, para los ejercicios ``oche'' se reutiliza el código
@@ -332,20 +124,152 @@ usando otro módulo nuevo: \\
 	\captionof{figure}{Estructura del módulo de ayuda ``recibir\_mensaje.py''}\label{fig:1/code3}
 \end{minipage}
 
-\subsection{Ejercicio 1}
+\subsection{Tamaño Prefijado}
 
-\subsection{Ejercicio 2}
+Inicialmente, se fija un tamaño de 5 bytes por mensaje.
+Se escriben un cliente y servidor que trabajan con mensajes de longitud 5 bytes.
 
-\subsection{Experimento}
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/1.png}
+	\captionof{figure}{V1}\label{fig:1/4}
+\end{minipage}
 
-\subsection{Ejercicio 3 / Experimento}
+En una segunda versión, se utiliza una función que recibe todos los bytes
+independientemente de si llegan seguidos o no.
 
-\subsection{Ejercicio 4 / Experimento}
+A efectos de la salida, no hay cambios a menos que las condiciones de la red
+impliquen un cambio en el envío de los mensajes.
 
-\subsection{Ejercicio 5}
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/2.png}
+	\captionof{figure}{V2}\label{fig:1/5}
+\end{minipage}
 
-\subsection{Ejercicio 6}
+Si modificamos el número de bytes en los mensajes,
+curiosamente se vuelven a leer desde el principio una vez terminados.
 
-\subsection{Ejercicio 7 (opcional)}
+Esto es, si se envía el mensaje \verb#ABCD# y el código indica que se deben leer
+5 bytes, se leerá \verb#ABCDA#.
 
-\subsection{Experimento + Ejercicio Docker}
+Esto sucede tanto en la primera como en la segunda versión del servidor.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/3.png}
+	\captionof{figure}{V2}\label{fig:1/5}
+\end{minipage}
+
+\subsection{Marca de Fin de Mensaje}
+
+Los siguientes clientes y servidores utilizan un retorno de carro
+para indicar el fin de mensaje.
+
+El siguiente ejemplo consiste de un cliente que envía un mensaje
+con \verb#\r\n# al final
+y un servidor que al recibir dicho mensaje lo retorna dado la vuelta.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/4.png}
+	\captionof{figure}{Oche Simplista}\label{fig:1/6}
+\end{minipage}
+
+A continuación, se modifica el cliente para que envie 3 mensajes
+seguidos y posteriormente espere 3 mensajes de vuelta.
+
+Se muestra una imagen con la salida de estos programas:
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/5.png}
+	\captionof{figure}{Envía Seguido}\label{fig:1/7}
+\end{minipage}
+
+\begin{notebox}
+    Para el desarrollo del servidor,
+    se proporcionó en el CV una captura de código
+    con el bucle de atención al cliente.
+
+    Este algoritmo no nos funcionó,
+    por lo que lo modificamos para que cumpliese su objetivo.
+
+    Si bien en este documento no se muestra todo el código,
+    se deja en esta anotación una captura de pantalla del bucle
+    de atención al cliente.
+
+	\includegraphics[width=\textwidth]{1/TCP/carbon.png}
+\end{notebox}
+
+Posteriormente se añade la función \verb#recibe_mensaje#
+para leer datos del socket.
+Esta función se implementa en las siguientes versiones del cliente
+y servidor.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/6.png}
+	\captionof{figure}{Servidor y Cliente Mejorados}\label{fig:1/8}
+\end{minipage}
+
+Finalmente, se optimiza la función en una nueva llamada \verb#readline#
+que no lee los bytes de uno en uno.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/7.png}
+	\captionof{figure}{Readline}\label{fig:1/9}
+\end{minipage}
+
+La función \verb#readline# genera un fichero nuevo cada vez que se llama,
+por lo tanto, no es posible enviar una cadena con varios saltos
+de línea y obtener las líneas independientes con varias llamadas a la
+función.
+
+Para poder implementar este funcionamiento,
+sería necesario utilizar un iterador que mantuviese el fichero
+con \verb#yield# en lugar de \verb#return#.
+
+\subsection{Enviar Longitud del Mensaje}
+
+Finalmente, la ultima estrategia sería enviar la longitud del mensaje
+para que el receptor conozca cuántos bytes debe enviar.
+
+El primer ejemplo envía la longitud del mensaje como un número decimal
+al inicio del mensaje.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/8.png}
+	\captionof{figure}{Cliente y Servidor envían la longitud del mensaje}\label{fig:1/10}
+\end{minipage}
+
+El segundo ejemplo envía la longitud del mensaje como un número en binario
+\verb#big endian# al inicio del mensaje.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{1/TCP/9.png}
+	\captionof{figure}{}\label{fig:1/11}
+\end{minipage}
+
+\section{Conclusiones}
+
+El uso de sockets (tanto UDP como TCP) no es nuevo para nosotros, puesto que se han
+utilizado previamente en otras asignaturas{ - }por lo tanto, no ha sido una práctica
+especialmente difícil ni interesante. Sin embargo, lo que si ha sido interesante es
+revisitar las estrategias de TCP para averiguar el fin del mensaje en un lenguaje
+diferente y más rápido de escribir que C.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Autor} & \textbf{Porcentaje} \\
+		\hline
+		\hline
+		\authorOne & 50\% \\
+		\authorTwo & 50\% \\
+		\hline
+	\end{tabular}
+\end{center}

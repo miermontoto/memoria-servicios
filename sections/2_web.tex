@@ -12,39 +12,39 @@ Respecto al resto del enunciado, se responden a las siguientes preguntas:
 	\item Para ``averiguar'' la IP del contenedor, se ejecuta el siguiente comando: \\
 		\begin{minipage}{\linewidth}
 			\centering
-			\includegraphics[width=\textwidth]{2/1.png}
+			\includegraphics[width=\textwidth]{21/1.png}
 			\captionof{figure}{Comando para obtener la dirección IP de un contenedor y resultado}\label{fig:2/1}
 		\end{minipage}
 	\item Al hacer \Verb#wget# a dicha IP se obtiene lo siguiente: \\
 		\begin{minipage}{\linewidth}
 			\centering
-			\includegraphics[width=\textwidth]{2/2.png}
+			\includegraphics[width=\textwidth]{21/2.png}
 			\captionof{figure}{Resultado de hacer wget a la IP del contenedor}\label{fig:2/2}
 		\end{minipage}
 	\item Se descarga el fichero \Verb#50x.html#: \\
 		\begin{minipage}{\linewidth}
 			\centering
-			\includegraphics[width=\textwidth]{2/3.png}
+			\includegraphics[width=\textwidth]{21/3.png}
 			\captionof{figure}{Descarga del fichero 50x.html}\label{fig:2/3}
 		\end{minipage}
 	\item Tras las modificaciones, se obtiene la siguiente respuesta (\textit{correcta}),
 		y se comprueba que se ven las modificaciones en el navegador: \\
 		\begin{minipage}{\linewidth}
 			\centering
-			\includegraphics[width=\textwidth]{2/4.png}
+			\includegraphics[width=\textwidth]{21/4.png}
 			\captionof{figure}{Landing page de nginx}\label{fig:2/4}
 		\end{minipage}
 	\item En los logs del contenedor aparecen las peticiones del navegador: \\
 		\begin{minipage}{\linewidth}
 			\centering
-			\includegraphics[width=\textwidth]{2/5.png}
+			\includegraphics[width=\textwidth]{21/5.png}
 			\captionof{figure}{Logs del contenedor}\label{fig:2/5}
 		\end{minipage}
 	\item Tras las modificaciones del enunciado, se prueba a acceder a un contenido
 		que no existe: \\
 		\begin{minipage}{\linewidth}
 			\centering
-			\includegraphics[width=\textwidth]{2/6.png}
+			\includegraphics[width=\textwidth]{21/6.png}
 			\captionof{figure}{404 al acceder a un contenido que no existe}\label{fig:2/6}
 		\end{minipage}
 \end{itemize}
@@ -53,7 +53,7 @@ Se siguen todos los pasos y se comprueba que, al conectarse al otro puerto, se o
 respuestas distintas: \\
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=\textwidth]{2/7.png}
+	\includegraphics[width=\textwidth]{21/7.png}
 	\captionof{figure}{Respuesta al acceder a otro puerto}\label{fig:2/7}
 \end{minipage}
 
@@ -65,27 +65,27 @@ respuestas distintas: \\
 Se crea una carpeta separada con los ficheros relevantes: \\
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=\textwidth]{2/8.png}
+	\includegraphics[width=\textwidth]{21/8.png}
 	\captionof{figure}{Estructura de ficheros}\label{fig:2/8}
 \end{minipage}
 
 Se prueba la conexión de manera simple contra el servidor Flask: \\
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=\textwidth]{2/9.png}
+	\includegraphics[width=\textwidth]{21/9.png}
 	\captionof{figure}{Conexión a Flask}\label{fig:2/9}
 \end{minipage}
 
 Se realiza una conexión contra \Verb#gunicorn# y se comprueba que funciona: \\
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=\textwidth]{2/10.png}
+	\includegraphics[width=\textwidth]{21/10.png}
 	\captionof{figure}{Logs de gunicorn tras la prueba de conexión}\label{fig:2/10}
 \end{minipage}
 \\
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=\textwidth]{2/11.png}
+	\includegraphics[width=\textwidth]{21/11.png}
 	\captionof{figure}{Reflejo del navegador de la conexión con gunicorn}\label{fig:2/11}
 \end{minipage}
 
@@ -94,15 +94,155 @@ Se crea el fichero \Verb#Dockerfile# con el contenido del enunciado y se constru
 imagen: \\
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=\textwidth]{2/12.png}
+	\includegraphics[width=\textwidth]{21/12.png}
 	\captionof{figure}{Construcción y ejecución de la imagen}\label{fig:2/12}
 \end{minipage}
 
 Se comprueba que funciona correctamente: \\
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=\textwidth]{2/13.png}
+	\includegraphics[width=\textwidth]{21/13.png}
 	\captionof{figure}{Comprobación de conexión con la imagen}\label{fig:2/13}
 \end{minipage}
 
 \section{Aplicaciones web y HTTP}\label{sec:2/2}
+
+En esta práctica no hay mucha información que mostrar, ya que se trata de seguir la
+guía y comprobar que funciona.
+
+ \subsection{Scripts de ayuda e primera versión}
+Para la realización de esta práctica se encuentra un script de ayuda que lancen y paren
+automáticamente los contenedores necesarios para la práctica. Se encuentra en el fichero
+\Verb#all.sh# y se ejecuta de la siguiente manera:
+\begin{verbatim}
+	Usage: all.sh flask|nginx|maria
+\end{verbatim}
+Los comandos que utiliza el script para lanzar los contenedores son los proporcionados en
+el enunciado.
+
+A parte de los contenedores, se crea el entorno virtual de Flask y se instalan las
+dependencias necesarias para la aplicación. Se crea y se configura la estructura básica
+de la aplicación según el enunciado. La URI de conexión a la base de datos se configura
+en el archivo \Verb#instance/config.py#.
+
+\begin{verbatim}
+	mysql+pymysql://amigosuser:amigospass@basedatos/amigosdb
+\end{verbatim}
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.5\textwidth]{22/2.png}
+	\captionof{figure}{Estructura de la aplicación}\label{fig:2/14}
+\end{minipage}
+
+Tras seguir la configuración inicial, se lanza la aplicación por primera vez:
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{22/3.png}
+	\captionof{figure}{Primer lanzamiento de la aplicación}\label{fig:2/16}
+\end{minipage}
+
+Se ejecuta la primera migración y se comprueba que funciona correctamente:
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{22/1.png}
+	\captionof{figure}{Ejecución de la primera migración}\label{fig:2/15}
+\end{minipage}
+
+Durante la primera ``versión'' de la aplicación, se crea la única vista y
+se conecta con el modelo mediante un controlador.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{22/4.png}
+	\captionof{figure}{Primera versión de la aplicación}\label{fig:2/17}
+\end{minipage}
+
+\subsection{Segunda versión: plantillas}
+En esta versión se añaden plantillas de Jinja2, que el fichero \Verb#__init__.py#
+se limitará a renderizar con los datos que se le pasen.
+
+Tras seguir el enunciado, el único cambio visible es que ahora se necesita acceder
+a la ruta \Verb#/html/amigos#/ para ver la lista de amigos, la cual tiene enlaces
+al resto de páginas de modificación de la base de datos.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{22/5.png}
+	\captionof{figure}{Vista de añadir/modificar amigos}\label{fig:2/18}
+\end{minipage}
+
+Como se considera en el enunciado, la vista de añadir y modificar amigos es la misma,
+pero que se rellena con los datos pre-existentes en el caso de que se esté modificando.
+
+\subsection{Tercera versión: API REST}
+En esta versión se añade una API REST para poder acceder a los datos de la base de datos
+desde una aplicación externa. El diseño de la API viene dado por el enunciado, por lo que
+la única tarea es la implementación de la misma.
+
+Para probar la API, se utiliza la herramienta \Verb#httpie#:
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{22/6.png}
+	\captionof{figure}{Prueba de la API}\label{fig:2/19}
+\end{minipage}
+
+El resto de esta versión consiste en la implementación de la los métodos de la API{.}
+Todo el código se encuentra en el repositorio de la asignatura, en la carpeta
+\Verb#2_web/parte2# como el resto de la práctica.
+
+\subsection{Contenedores y parámetro \textit{device}}
+El despliegue en contenedores está contemplada en la primera sección de esta práctica,
+donde se habla de cómo se lanzan los mismos. Los cambios a realizar para que la aplicación
+funcione en contenedores son mínimos, ya que se trata (en esencia) de cambiar la URI de
+conexión a la base de datos y pasar las variables de entorno necesarias para que la
+aplicación funcione.
+
+Se utiliza un contenedor \Verb#nginx# para servir la aplicación, y se utiliza un contenedor
+\Verb#mariadb# para servir la base de datos. Se utiliza un volumen para que los datos de la
+base de datos persistan entre ejecuciones.~\textit{Importante no subir el volumen al
+repositorio para no subir datos innecesarios.}
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.6\textwidth]{22/7.png}
+	\captionof{figure}{Demostración de ejecución de la aplicación en contenedores}\label{fig:2/20}
+\end{minipage}
+
+La última sección, sobre el parámetro \Verb#device#, trata de añadirle un parámetro a la
+entidad \Verb#Amigo#, cambiando también todas las llamadas API y modificando las vistas HTML
+para reflejarlo. Este cambio será útil para la última práctica. (Ver \nameref{sec:7/2})
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.5\textwidth]{22/8.png}
+	\captionof{figure}{Respuesta de la API con campo `device'}\label{fig:2/21}
+\end{minipage}
+
+\section{Conclusiones}
+Esta práctica es, en mi opinión, la práctica más interesante de la asignatura, del cuatrimestre,
+y una de las mejores de toda la carrera. A comparación de otras asignaturas, donde se nos enseña
+a utilizar herramientas desactualizadas que ya no tienen uso en el mundo real, esta práctica es
+una introducción a tecnologías modernas que yo mismo he utilizado en proyectos personales y que
+tendrán un reflejo directo en mi futuro. Puede parecer una exageración, pero es de las pocas veces
+en las que he sentido que lo que estoy aprendiendo es útil y que me va a servir en el futuro.
+
+Algo negativo de la práctica es que, al ser muy completa y tratar temas nuevos para el alumnado,
+la estructura está muy guiada y no deja mucho espacio para la implementación de cada uno. Mi
+opinión personal es que se una práctica de este estilo debería ser más libre, quizás siguiendo
+el estilo de otras asignaturas como \textit{Administración de Sistemas}.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Autor} & \textbf{Porcentaje} \\
+		\hline
+		\hline
+		\authorOne & 90\% \\
+		\authorTwo & 10\% \\
+		\hline
+	\end{tabular}
+\end{center}
