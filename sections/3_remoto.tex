@@ -1,208 +1,165 @@
-\Chapter{Servicios de acceso remoto y transferencia}{}
+\chapter{Acceso remoto y transferencia}\label{chap:3}
+Esta práctica se centra en protocolos muy utilizados en la actualidad para
+acceder a máquinas remotas y transferir archivos entre ellas. No se ha
+realizado el apartado opcional de FTP{.}
+
+Todo el código de esta práctica se encuentra dividido en carpetas según
+el protocolo sobre el que se está trabajando. En cada carpeta se encuentran
+los ficheros de cada ejercicio, con el nombre del ejercicio en cuestión.
 
 \section{Acceso remoto}
-\subsection{Ejercicio 1}
+\subsection{Telnet}
+Para la realización de este apartado, se instala el servidor \Verb#telnetd# y su cliente y
+se activa.
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/telnet0.png}
+    \captionof{figure}{Instalación del servidor Telnet}\label{fig:3/1}
+\end{minipage}
+
+Como recuerda el enunciado, el servidor telnet no es seguro, por lo que se ha de desactivar
+tras el desarrollo de los ejercicios.
+
+Los siguientes ejercicios son solo pequeñas demostraciones prácticas sobre el protocolo, por
+lo que no tienen grandes explicaciones.
+
+\subsubsection{Ejercicio 1}
 El ejercicio solicita que se escriba un programa \lstinline{telnet1_ejemplo.py}
 que muestre por pantalla el resultado de ejecutar la orden \lstinline{ls} en el
 directorio \Verb#/home#.
 
-\begin{lstlisting}[language=Python]
-    import getpass
-    import telnetlib
-
-    encoding = 'utf8'
-    HOST = "localhost"
-    user = input("Enter your remote account: ")
-    password = getpass.getpass()
-
-    tn = telnetlib.Telnet(HOST)
-
-    tn.read_until(b"login: ")
-    tn.write(user.encode(encoding) + b"\n")
-    if password:
-        tn.read_until(b"Password: ")
-        tn.write(password.encode(encoding) + b"\n")
-
-    tn.write(b"cd /home\n")
-    tn.write(b"ls\n")
-    tn.write(b"exit\n")
-
-    print(tn.read_all().decode(encoding))
-\end{lstlisting}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/telnet1.png}
+    \captionof{figure}{Ejercicio de ejemplo de Telnet}\label{fig:3/2}
+\end{minipage}
 
 El ejercicio solicita posteriormente que se mejore el programa \\
-(\lstinline{telnet1_ejemplo_mejorado.py}) para que omita el mensaje de bienvenida
+(\Verb#telnet1_ejemplo_mejorado.py#) para que omita el mensaje de bienvenida
 del sistema.
 
-\begin{lstlisting}[language=Python]
-    import getpass
-    import telnetlib
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/telnet2.png}
+    \captionof{figure}{Ejercicio de ejemplo de Telnet mejorado}\label{fig:3/3}
+\end{minipage}
 
-    encoding = 'utf8'
-    HOST = "localhost"
-    user = input("Enter your remote account: ")
-    password = getpass.getpass()
+\subsubsection{Ejercicio 2}
 
-    tn = telnetlib.Telnet(HOST)
+El ejercicio solicita escribir un programa \Verb#telnet2_lanza_servidor.py#
+que lance un programa de la sesión \nameref{chap:1}.
 
-    tn.read_until(b"login: ")
-    tn.write(user.encode(encoding) + b"\n")
-    if password:
-        tn.read_until(b"Password: ")
-        tn.write(password.encode(encoding) + b"\n")
+Debido a que esta práctica se realiza en una máquina física Linux donde se acortan
+los nombres de los procesos que se envían a través del comando \Verb#ps -ef#, el
+ejercicio no funciona como esperado. El código que no funciona (validado por el
+profesor) es el siguiente:
 
-    tn.read_until("$".encode(encoding))
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/telnet_code1.png}
+    \captionof{figure}{Código del ejercicio 2}\label{fig:3/4}
+\end{minipage}
 
-    tn.write(b"cd /home\n")
-    tn.write(b"ls\n")
-    tn.write(b"exit\n")
+De todas formas, la esencia de la práctica es utilizar telnet para lanzar el servidor
+UDP, por lo que se ignora la parte de la comprobación de procesos.
 
-    print(tn.read_all().decode(encoding))
-\end{lstlisting}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/telnet3.png}
+    \captionof{figure}{Telnet lanzando servidor UDP a través de nohup}\label{fig:3/5}
+\end{minipage}
 
-\subsection{Ejercicio 2}
+\subsection{SSH}
+Puesto que el servidor SSH ya se encuentra instalado en la máquina, no es necesario
+instalarlo. Todas las prácticas se realizan en plataformas Linux, por lo que se
+utilizan las contrapartes de los programas de Windows que se utilizan en el enunciado.
 
-El ejercicio solicita escribir un programa \lstinline{telnet2_lanza_servidor.py}
-que lance un programa de la sesión \nameref{Servicios básicos}.
+\subsubsection{Ejercicio 3}
+En este ejercicio, en lugar de PuTTY se utiliza el comand \Verb#ssh# directamente
+para conectarse a un servidor remoto y verificar las huellas.
 
-\begin{lstlisting}[language=Python]
-    import getpass
-    import telnetlib
-    import time
+Para realizar este ejercicio, se utiliza un servidor externo que tenga SSH activado
+y que nos permita obtener toda la información necesaria.
 
-    encoding = 'utf8'
-    HOST = "localhost"
-    user = input("Enter your remote account: ")
-    password = getpass.getpass()
+Al ejecutar el comando que nos otorga el fingerprint de la clave ED25519, obtenemos
+el siguiente resultado: \Verb#SHA256:XWZjJrS...#. Al tratar de conectarnos al
+servidor, verificamos que el fingerprint que nos muestra es el mismo que el que
+nos ha dado el comando:
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/ssh1.png}
+    \captionof{figure}{Fingerprint del servidor SSH}\label{fig:3/6}
+\end{minipage}
 
-    tn = telnetlib.Telnet(HOST)
+\subsubsection{Ejercicio 4}
+Para este ejercicio, en lugar de utilizar PuTTYgen, se utiliza el comando \Verb#ssh-keygen#
+para generar la clave RSA{.}
 
-    tn.read_until(b"login: ")
-    tn.write(user.encode(encoding) + b"\n")
-    if password:
-        tn.read_until(b"Password: ")
-        tn.write(password.encode(encoding) + b"\n")
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/ssh2.png}
+    \captionof{figure}{Generación de claves RSA}\label{fig:3/7}
+\end{minipage}
 
-    tn.read_until("$".encode(encoding))
+El comando guarda automáticamente las claves en el directorio \Verb#~/.ssh# con los
+nombres \Verb#id_rsa# y \Verb#id_rsa.pub#. Para poder utilizarlas, se copia la clave
+pública al servidor remoto, en el fichero \Verb#~/.ssh/authorized_keys#.
 
-    tn.write(b"ps -ef\n")
+\subsubsection{Ejercicio 5, 6}
+Para utilizar las claves generadas en el ejercicio anterior, se ejecuta el comando
+\Verb#ssh# junto con la opción \Verb#-i# para indicar la clave privada a utilizar.
 
-    output = tn.read_until("$".encode(encoding)).decode(encoding)
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/ssh3.png}
+    \captionof{figure}{Conexión SSH con clave RSA}\label{fig:3/8}
+\end{minipage}
 
-    print("udp_servidor3_con_ok.py" in output)
+\subsubsection{Ejercicio 7}
+En lugar de \Verb#pageant#, se utiliza el comando \Verb#ssh-agent# para gestionar
+las claves. Para añadir la clave privada al agente, se utiliza el comando
+\Verb#ssh-add#. Para comprobar que la clave se ha añadido correctamente, se utiliza
+el comando \Verb#ssh-add -l#.
 
-    if ("udp_servidor3_con_ok.py" in output):
-        print("El servidor ya esta en ejecucion")
-        exit(0)
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/ssh4.png}
+    \captionof{figure}{Gestión de claves con ssh-agent}\label{fig:3/9}
+\end{minipage}
 
-    tn.write(f"nohup python3 udp_servidor3_con_ok.py &\n".encode(encoding))
-    time.sleep(1)
-    tn.write(b"exit\n")
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/ssh5.png}
+    \captionof{figure}{}\label{fig:3/10}
+\end{minipage}
 
-    print(tn.read_all().decode(encoding))
-\end{lstlisting}
-
-\subsection{Ejercicio 3}
-\subsection{Ejercicio 4}
-\subsection{Ejercicio 5}
-\subsection{Ejercicio 6}
-\subsection{Ejercicio 7}
-\subsection{Ejercicio 8}
-
-El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_mal.py}
-para que incluya la línea \lstinline{client.set_missing_host_key_policy(paramiko.AutoAddPolicy())}
-(resultando en el \lstinline{ssh_ejemplo_inseguro.py}).
+\subsubsection{Ejercicio 8}
+El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_mal.py#
+para que incluya la línea \Verb#client.set_missing_host_key_policy(paramiko.AutoAddPolicy())#
+(resultando en el \Verb#ssh_ejemplo_inseguro.py#).
 
 Introducimos la línea en cuestión entre la creación del cliente \Verb#paramiko#
-y la conexión con el servidor ssh.
-
-\begin{lstlisting}[language=Python]
-    import paramiko
-    import time
-    from getpass import getpass
-
-    user: str = input("Introduzca nombre de usuario: ")
-    password: str = getpass()
-
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect('localhost', username=user, password=password)
-    print("Conectado!!")
-
-
-    # Ejecutar comando remoto, redireccionando sus salidas
-    stdin, stdout, stderr = client.exec_command('ls')
-
-    # Mostrar resultado de la ejecución (rstrip quita los retornos de carro)
-    for line in stdout:
-        print(line.rstrip())
-    time.sleep(1)  # Dar tiempo a que se vacie el buffer
-    client.close()
-\end{lstlisting}
+y la conexión con el servidor ssh para hacer que el cliente acepte cualquier
+clave que le envíe el servidor.
 
 \subsection{Ejercicio 9}
-El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_inseguro.py}
+El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_inseguro.py#
 para que el cliente utilice la \Verb#WarningPolicy#.
 
 Modificamos la política de la línea introducida en el ejercicio anterior y
-obtenemos el fichero \lstinline{ssh_ejemplo_inseguro2.py}.
-
-\begin{lstlisting}[language=Python]
-    # ... El resto del programa es igual al anterior
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.WarningPolicy())
-    client.connect('localhost', username=user, password=password)
-    print("Conectado!!")
-    # ... El resto del programa es igual al anterior
-\end{lstlisting}
+obtenemos el fichero \Verb#ssh_ejemplo_inseguro2.py#.
 
 \subsection{Ejercicio 10}
 
-El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_inseguro2.py},
+El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_inseguro2.py#,
 eliminando la línea añadida previamente e insertando dos líneas nuevas para asegurar la conexión.
-
-\begin{lstlisting}[language=Python]
-    import paramiko
-    import time
-    import base64
-    from getpass import getpass
-
-    # ... El resto del programa es igual al anterior
-
-    client = paramiko.SSHClient()
-    key = paramiko.Ed25519Key(data=base64.decodestring(b'pubkey')) # See /etc/ssh/
-    client.get_host_keys().add('localhost', 'ssh-ed25519', key)
-    client.connect('localhost', username=user, password=password)
-    print("Conectado!!")
-
-    # ... El resto del programa es igual al anterior
-\end{lstlisting}
 
 \subsection{Ejercicio 11}
 
-El ejercicio solicita que se modifique el programa \lstinline{ssh_ejemplo_seguro.py}
+El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_seguro.py#
 para que sea posible conectarse al ordenador del compañero.
 
-\begin{lstlisting}[language=Python]
-    # ... El resto del programa es igual al anterior
-
-    host: str = input("Introduzca la dirección del host a conectarse: ")
-
-    client = paramiko.SSHClient()
-    key = paramiko.Ed25519Key(data=base64.decodestring(b'pubkey')) # See /etc/ssh/
-    client.get_host_keys().add('localhost', 'ssh-ed25519', key)
-    client.connect(host, username=user, password=password)
-    print("Conectado!!")
-
-    # ... El resto del programa es igual al anterior
-\end{lstlisting}
-
-\section{Transferencia de Archivos}
+\section{Transferencia de archivos}
 \subsection{Ejercicio 12}
 \subsection{Ejercicio 13}
-\subsection{Ejercicio 14}
-\subsection{Ejercicio 15}
-\subsection{Ejercicio 16}
-\subsection{Ejercicio 17}
-\subsection{Ejercicio 18}
-\subsection{Ejercicio 19}

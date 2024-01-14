@@ -1,17 +1,8 @@
-\Chapter{Contenido multimedia y streaming}{Multimedia}
+\chapter{Contenido multimedia y streaming}\label{chap:5}
 \subsection{Ejercicio 1}
-Una vez creado el \Verb#index.html#:
-\begin{lstlisting}[language=html]
-	<html lang="es">
-	<body>
-		<h1><a href="https://mier.info">Prueba de contenido multimedia</a></h1>
-		<video src="big_buck_bunny.mp4" controls></video>
-	</body>
-	</html>
-\end{lstlisting}
-
-Se lanza la imagen de docker mediante el siguiente comando:
-\begin{lstlisting}[language=bash]
+Una vez creado el \Verb#index.html#, se lanza la imagen de docker mediante el
+siguiente comando:
+\begin{lstlisting}
 	docker run --rm -d --network pruebas --name nginx -p 80:80 -v $(pwd)/html/video5/:/usr/share/nginx/html nginx
 \end{lstlisting}
 
