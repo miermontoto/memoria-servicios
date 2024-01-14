@@ -1,7 +1,5 @@
-\Chapter{DNS y correo electrónico}\label{chap:4}
-
+\chapter{DNS y correo electrónico}\label{chap:4}
 Esta práctica se centra en el uso de los protocolos de DNS y correo electrónico.
-
 En una primera sección, se estudia el uso del protocolo DNS para resolver nombres de dominios.
 
 En la última sección, se utilizan los protocolos SMPT y POP3 para enviar y recibir correos electrónicos.
@@ -10,19 +8,16 @@ Utilizar el servidor de uniovi impone la necesidad de realizar esta práctica en
 ya que este servidor no es accesible desde fuera de la misma (a menos que se utilice una VPN).
 
 \section{DNS}
-
 El servicio DNS se encarga de resolver nombres de dominios.
-El uso más general consiste en recibir un nombre de dominio y retornar su dirección IP.
+El uso más general consiste en recibir un nombre de dominio y retornar su dirección IP{.}
 No obstante, existen casos en los que se puede buscar la operación inversa u
 otros datos sobre un nombre de dominio.
 
 \subsection{Herramientas de línea de comandos}
-
-Nos introducimos al uso de las herramientas de comandos más comunes a la hora de trabajar con DNS.
+Nos introducimos al uso de las herramientas de comandos más comunes a la hora de trabajar con DNS{.}
 Estas herramientas muestran un distinto grado de granularidad en la información que presentan.
 
 \subsubsection{nslookup}
-
 La herramienta \verb#nslookup# nos retorna la dirección IP del servidor que estmos buscando
 junto con información extra como el nombre canónico o la dirección IPv6.
 
@@ -35,7 +30,7 @@ junto con información extra como el nombre canónico o la dirección IPv6.
 \subsubsection{host}
 
 La herramienta \verb#host# retorna menos información que \verb#nslookup#,
-simplemnete nos muestra la dirección IPv4 e IPv6 del servidor que buscamos. 
+simplemnete nos muestra la dirección IPv4 e IPv6 del servidor que buscamos.
 Esta herramienta tiene sin lugar a dudas la salida más legible (por un usuario) de las 3.
 
 \begin{minipage}{\linewidth}
@@ -45,7 +40,6 @@ Esta herramienta tiene sin lugar a dudas la salida más legible (por un usuario)
 \end{minipage}
 
 \subsubsection{dig}
-
 Finalmente, la herramienta \verb#dig# tiene la salida más barroca de las 3,
 nos muestra información como el nombre canónico, la dirección IPv4 y
 nos muestra también el servidor DNS que dio la respuesta entre otra información.
@@ -56,8 +50,7 @@ nos muestra también el servidor DNS que dio la respuesta entre otra informació
 	\captionof{figure}{dig de en.wikipedia.org}\label{fig:4/3}
 \end{minipage}
 
-\subsubsection{en.wikipedia.org - es.wikipedia.org}
-
+\subsubsection{Wikipedia}
 Comparamos la salida de \verb#nslookup# al buscar la dirección IP de los nombres
 \verb#en.wikipedia.org# y \verb#es.wikipedia.org#.
 
@@ -79,9 +72,9 @@ o \verb#2a02:ec80:600:ed1a::1# en el caso de IPv6.
 
 \subsubsection{DNS 8.8.8.8}
 
-La dirección del servidor DNS preferido puede ser modificada en el fichero \verb#/etc/resolv.conf#.
-Insertamos la direción \verb#8.8.8.8# en la primera linea de este fichero para que este sea el servidor con
-mayor prioridad.
+La dirección del servidor DNS preferido puede ser modificada en el fichero \\
+\verb#/etc/resolv.conf#. Insertamos la direción \verb#8.8.8.8# en la primera linea
+de este fichero para que este sea el servidor con mayor prioridad.
 
 \begin{minipage}{\linewidth}
 	\centering
@@ -101,7 +94,7 @@ comenzando desde un servidor DNS raiz.
 \subsubsection{Consulta sobre dominio raíz}
 
 Al consultar al servidor \verb#8.8.8.8# sobre el dominio raíz,
-obtenemos el nombre \verb#a.root-servers.net# en el campo \verb#SOA#.
+obtenemos el nombre \\ \verb#a.root-servers.net# en el campo \verb#SOA#.
 
 Procedemos a consultar sobre la IP de este servidor:
 
@@ -114,14 +107,14 @@ Procedemos a consultar sobre la IP de este servidor:
 En la respuesta, observamos que la dirección IPv4 de este servidor es
 \verb#198.41.0.4# (campo \verb#A#).
 
-\subsubsection{Consulta sobre .org}
+\subsubsection{Consulta sobre {.}org}
 
 Utilizamos el nuevo servidor para consultar sobre el dominio \verb#.org#:
 
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=0.8\textwidth]{4/Imagen49.png}
-	\captionof{figure}{Consulta sobre dominios .org}\label{fig:4/8}
+	\captionof{figure}{Consulta sobre dominios {.}org}\label{fig:4/8}
 \end{minipage}
 
 Obtenemos múltimples servidores, escogemos uno de ellos.
@@ -169,7 +162,7 @@ anteriores al consultar sobre este nombre de dominio.
 \subsection{DNS desde el programa (Python)}
 
 Utilizamos la librería \verb#dnspython# para escribir un programa que
-dado un nombre de dominio retorne su dirección IP.
+dado un nombre de dominio retorne su dirección IP{.}
 
 \begin{minipage}{\linewidth}
 	\centering
@@ -177,7 +170,7 @@ dado un nombre de dominio retorne su dirección IP.
 	\captionof{figure}{dnspython}\label{fig:4/12}
 \end{minipage}
 
-Al consultar por \verb#apple.com#, obtenemos sólo una dirección IP.
+Al consultar por \verb#apple.com#, obtenemos sólo una dirección IP{.}
 
 \begin{minipage}{\linewidth}
 	\centering
