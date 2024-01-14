@@ -60,7 +60,7 @@ Aquí se muestra un mensaje con el valor obtenido por la petición para el cambi
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=\textwidth]{71/Conversion.jpg}
-	\captionof{figure}{Ratio de EUR a USD}\label{fig:71/1}
+	\captionof{figure}{Ratio de EUR a USD}\label{fig:7/1}
 \end{minipage}
 
 A continuación, se muestra una captura de pantalla de la interfaz de usuario tras
@@ -69,7 +69,7 @@ haber realizado un cambio de euros a dólares:
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=0.4\textwidth]{71/App.jpg}
-	\captionof{figure}{Aplicación}\label{fig:71/2}
+	\captionof{figure}{Aplicación}\label{fig:7/2}
 \end{minipage}
 
 \newpage{}
@@ -89,7 +89,7 @@ El resultado de este apartado es el siguiente:
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=0.3\textwidth]{72/1.png}
-	\captionof{figure}{Aplicación base}\label{fig:72/1}
+	\captionof{figure}{Aplicación base}\label{fig:7/3}
 \end{minipage}
 
 \subsection{Integración de servicios web}
@@ -102,13 +102,13 @@ obtenga la posición de los amigos y los pinte en el mapa cada cierto tiempo:
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=0.3\textwidth]{72/2.png}
-	\captionof{figure}{Aplicación con amigos pintados}\label{fig:72/2}
+	\captionof{figure}{Aplicación con amigos pintados}\label{fig:7/4}
 \end{minipage}
 
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=0.7\textwidth]{72/3.png}
-	\captionof{figure}{Logcat de los amigos pintados}\label{fig:72/3}
+	\captionof{figure}{Logcat de los amigos pintados}\label{fig:7/5}
 \end{minipage}
 
 \subsection{Actualización de la posición en función del GPS}
@@ -132,45 +132,85 @@ A continuación se muestran capturas de pantalla del cambio
 
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=0.7\textwidth]{72/app_dumbo.png}
-	\captionof{figure}{Posición en DUMBO, NY}\label{fig:72/4}
+	\includegraphics[width=0.6\textwidth]{72/app_dumbo.png}
+	\captionof{figure}{Posición en DUMBO, NY}\label{fig:7/6}
 \end{minipage}
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=0.7\textwidth]{72/app_switching_rus.png}
-	\captionof{figure}{Cambiando la posición a Rusia}\label{fig:72/5}
+	\includegraphics[width=0.8\textwidth]{72/app_switching_rus.png}
+	\captionof{figure}{Cambiando la posición a Rusia}\label{fig:7/7}
 \end{minipage}
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=0.7\textwidth]{72/app_rus.png}
-	\captionof{figure}{Posición en Moscú, Rusia}\label{fig:72/6}
+	\includegraphics[width=0.4\textwidth]{72/app_rus.png}
+	\captionof{figure}{Posición en Moscú, Rusia}\label{fig:7/8}
 \end{minipage}
 
-También se puede ver en la web
+También se puede ver en la web.
 
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=0.7\textwidth]{72/json_dumbo}
-	\captionof{figure}{Web: Posición en DUMBO, NY}\label{fig:72/7}
+	\includegraphics[width=0.4\textwidth]{72/json_dumbo}
+	\captionof{figure}{Web: Posición en DUMBO, NY}\label{fig:7/9}
 \end{minipage}
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=0.7\textwidth]{72/json_rus}
-	\captionof{figure}{Web: Posición en Moscú, Rusia}\label{fig:72/8}
+	\includegraphics[width=0.4\textwidth]{72/json_rus}
+	\captionof{figure}{Web: Posición en Moscú, Rusia}\label{fig:7/10}
 \end{minipage}
 
 \subsection{Servicios de notificaciones}
 
 Tras realizar la preparación necesaria de Firebase, es necesario obtener el token en la aplicación Android.
-Para ello, podemos filtrar el LogCat con 'FCM' para obtener dicho token.
+Para ello, podemos filtrar el LogCat con `FCM' para obtener dicho token.
 
 En ese mismo filtro también se puede ver cómo la posición del amigo es modificada.
 
 \begin{minipage}{\linewidth}
 	\centering
-	\includegraphics[width=0.7\textwidth]{72/FCM.png}
-	\captionof{figure}{Token}\label{fig:72/9}
+	\includegraphics[width=\textwidth]{72/FCM.png}
+	\captionof{figure}{Log del token recibido de Firebase}\label{fig:7/11}
 \end{minipage}
+
+A la hora de obtener la información del propio usuario, se ha optado por crear un método
+que obtenga la información del usuario de la API en función de un objeto \Verb#Amigo#, que
+en el caso del enunciado somos nosotros mismos. Esta función nos permitiría obtener más
+información de cualquier amigo que se conozca, no solo en función de nuestro token.
+
+Tras eliminar la parte del código que actualizaba la posición de las chinchetas periódicamente,
+se añade el código estipulado para recibir las notificaciones de Firebase.
+
+Después de seguir el enunciado y ajustar todo el frontend (la aplicación) para que funcione
+correctamente, se ajusta el backend (la API) para que envíe notificaciones a Firebase.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{72/5.png}
+	\captionof{figure}{Enviando mensajes de prueba desde la consola de Firebase}\label{fig:7/12}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{72/6.png}
+	\captionof{figure}{Configuración de Firebase}\label{fig:7/13}
+\end{minipage}
+
+Para actualizar desde el backend, se obtiene el device de todos los dispositivos a través de la base
+de datos y se envían mensajes a todos ellos. (fichero \Verb#app/fcm.py#)
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{72/7.png}
+	\captionof{figure}{Código que envía notificaciones en el backend}\label{fig:7/14}
+\end{minipage}
+
+A parte de ese fichero, hay que seguir las notificaciones del enunciado para tener en cuenta
+las notificaciones que se envían (y modificar el Dockerfile para incluir la dependencia).
+
+Al final de esta práctica, el resultado visual es exactamente el mismo que en la práctica anterior,
+por lo que no hay ``evidencia gráfica'' de que se haya realizado correctamente. Sin embargo, el
+código que respalda toda esta memoria se encuentra en el repositorio de Bitbucket en la carpeta
+\Verb#7_serviciosMóviles#. El código de la API se encuentra en la carpeta \Verb#2_serviciosWeb/parte2#.
 
 \section{Conclusiones}
 Esta práctica es, sin duda, la más difícil de todas las realizadas. No por la dificultad de las
@@ -182,7 +222,7 @@ ejecutar dispositivos virtuales debido a un fallo desconocido en la emulación.
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=0.9\textwidth]{72/4.png}
-	\captionof{figure}{Error al ejecutar un dispositivo virtual}\label{fig:72/100000}
+	\captionof{figure}{Error al ejecutar un dispositivo virtual}\label{fig:7/13}
 \end{minipage}
 
 Otro error conocido es que no se logre la comunicación entre Firebase y la aplicación, pese a seguir
