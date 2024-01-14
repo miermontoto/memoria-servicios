@@ -130,3 +130,53 @@ las funciones matemáticas definidas.
 	\includegraphics[width=\textwidth]{6/Imagen616.png}
 	\captionof{figure}{Excepción en el bot al usar $log$}\label{fig:6/7}
 \end{minipage}
+
+\section{Conclusiones}
+
+Esta práctica resulta ser de las más interesantes ya que permite al alumno conocer una Introducción
+a un protocolo que puede ser utilizado en muchos casos.
+
+El caso de uso más obvio (el mismo utilizado en esta práctica) es lógicamente una aplicación de
+mensajería. No obstante, sería posible también utilizar XMPP para diseñar una red de sistemas
+que se puedan comunicar entre sí. Si bien no es necesario utilizar XMPP para cumplir este objetivo,
+puede facilitar muchas de las comunicaciones que podrían ser necesarias en dicha red
+(como por ejemplo que dos sistemas se subscriban a las notificaciones de otro).
+
+Respecto a Pidgin, afortunadamente es una aplicación que está disponible en diversos sistemas operativos
+por lo que no fue complicado instalarla en Debian (cosa que no se puede esperar de la mayoría de asignaturas).
+Por otro lado, Pidgin resulta un poco incómodo de utilizar debido principalmente a su uso de diversas ventanas.
+Existe una ventana para hacer login, otra para el listado de amigos, otra para añadir amigos nuevos,
+otra para cada chat\dots Aunque para la duración de la práctica, no es un inconveniente destacable.
+
+Hubiese sido interesante (comprendemos que no se ha realizado por falta de tiempo) desarrollar una
+aplicación que utilice el protocolo XMPP.
+Esto es, diseñar un 'Pidgin' casero.
+No hay duda que quedará en la lista de proyectos por hacer de muchos alumnos.
+
+Respecto al desarrollo del bot, en nuestro caso hemos invertido una mayor cantidad de tiempo depurando
+problemas relacionados con SSL que desarrollando el bot en sí.
+Es interesante dar a conocer cómo crear un bot en XMPP, pero en nuestra experiencia no ha sido particularmente
+eficiente.
+
+Los problemas del desarrollo del bot se originan principalmente de la no disponibilidad de la libería
+\verb#sleekxmpp# y de los problemas con SSL.
+
+\begin{notebox}
+	No tenemos en cuenta los problemas relacionados con \verb#sleekxmpp# ni SSL debido a que seguramente
+	sean causados por utilizar operativos distintos a los especificados en la guía docente de
+	la asignatura.
+
+	Ningún otro alumno de nuestro grupo de prácticas se ha encontrado con estos problemas.
+\end{notebox}
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Autor} & \textbf{Porcentaje} \\
+		\hline
+		\hline
+		\authorOne & 10\% \\
+		\authorTwo & 90\% \\
+		\hline
+	\end{tabular}
+\end{center}
