@@ -131,35 +131,79 @@ el comando \Verb#ssh-add -l#.
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=\textwidth]{3/ssh5.png}
-    \captionof{figure}{}\label{fig:3/10}
+    \captionof{figure}{Demostración de autenticación mediante el agente}\label{fig:3/10}
 \end{minipage}
 
 \subsubsection{Ejercicio 8}
 El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_mal.py#
 para que incluya la línea \Verb#client.set_missing_host_key_policy(paramiko.AutoAddPolicy())#
-(resultando en el \Verb#ssh_ejemplo_inseguro.py#).
+(resultando en el \Verb#ssh_ejemplo_inseguro.py#). Introducimos la línea en cuestión entre la
+creación del cliente \Verb#paramiko# y la conexión con el servidor ssh para hacer que el cliente
+acepte cualquier clave que le envíe el servidor.
 
-Introducimos la línea en cuestión entre la creación del cliente \Verb#paramiko#
-y la conexión con el servidor ssh para hacer que el cliente acepte cualquier
-clave que le envíe el servidor.
+Como dice el enunciado, la ejecución de esta ``solución'' resulta en un error.
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/ssh6.png}
+    \captionof{figure}{Error en la ejecución del ejemplo inseguro.}\label{fig:3/11}
+\end{minipage}
+
+La alternativa a esto es preguntarle al usuario directamente por la clave del servidor
+y comprobar que es correcta antes de aceptarla.
 
 \subsubsection{Ejercicio 9}
 El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_inseguro.py#
 para que el cliente utilice la \Verb#WarningPolicy#.
 
 Modificamos la política de la línea introducida en el ejercicio anterior y
-obtenemos el fichero \Verb#ssh_ejemplo_inseguro2.py#.
+obtenemos el fichero \Verb#ssh_ejemplo_inseguro2.py#. Este script sí que ejecuta
+correctamente, pero muestra un mensaje de advertencia al usuario.
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/ssh7.png}
+    \captionof{figure}{Ejecución del ejemplo inseguro 2.}\label{fig:3/12}
+\end{minipage}
 
 \subsubsection{Ejercicio 10}
-
 El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_inseguro2.py#,
 eliminando la línea añadida previamente e insertando dos líneas nuevas para asegurar la conexión.
+
+Para completar este ejercicio es necesario acceder al fichero \\
+\Verb#/etc/ssh/ssh_host_ed25519_key.pub#, y añadir la clave pública del servidor,
+que se pide por terminal al usuario.
 
 \subsubsection{Ejercicio 11}
 
 El ejercicio solicita que se modifique el programa \Verb#ssh_ejemplo_seguro.py#
-para que sea posible conectarse al ordenador del compañero.
+para que sea posible conectarse al ordenador del compañero. Sigue la misma dinámica
+de los ejercicios anteriores.
 
 \section{Transferencia de archivos}
+En esta sección se utilizan los protocolos \Verb#scp# y \Verb#sftp# para transferir
+archivos entre máquinas remotas. Puesto que no se entra en muchos detalles en el
+enunciado de la práctica, tampoco se comentan muchos detalles en esta memoria.
+
 \subsubsection{Ejercicio 12}
+Este ejercicio solicita que se utilice el programa \Verb#sftp# para conectarse a un
+servidor remoto y listar los archivos que contiene.
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/sftp1.png}
+    \captionof{figure}{Listado de archivos con sftp}\label{fig:3/13}
+\end{minipage}
+
 \subsubsection{Ejercicio 13}
+Este ejercicio solicita que se utilice el programa \Verb#sftp# para conectarse a un
+servidor remoto y descargar todos los archivos (no directorios) del directorio \Verb#HOME#.
+
+Se comenta el comando que descarga los ficheros para evitar tener que estar borrando y
+descargando los ficheros cada vez que se ejecuta el script.
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{3/sftp2.png}
+    \captionof{figure}{Descarga de archivos con sftp}\label{fig:3/14}
+\end{minipage}
