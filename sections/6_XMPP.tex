@@ -39,10 +39,16 @@ En la distribución de Linux utilizada para instalar el cliente, Debian 12 Bookw
 se han instalado los paquetes del repositorio oficial \italic{stable}
 \lstinline{pidgin 2.14.12-1} y \lstinline{pidgin-data 2.14.12-1}.
 
+TODO: Imagen610
+
 Hacemos login como ambos usuarios y los añadimos como amigos.
 De ahora en adelante, será posible que estos dos usuarios chateen entre ellos.
 
-TODO: Imagen
+TODO: Imagen611
+
+Estos dos usuarios se comunican utilizando el programa.
+
+TODO: Imagen613
 
 \subsection{Protocolo XMPP}
 
@@ -51,7 +57,11 @@ Podemos ver las estrofas del \lstinline{ping} que envía Pidgin periódicamente.
 También se ven los cambios de estado con la \italic{stanza} presence.
 Finalmente, observamos \italic{stanzas} recibidas al enviar un mensaje.
 
-TODO: Imagen
+TODO: Imagen612
+
+Igual sucede cuando dos usuarios se subscriben a las notificaciones.
+
+TODO: Imagen614
 
 \subsection{Bot XMPP}
 
@@ -84,11 +94,18 @@ Hemos tenido que añadir dos líneas de código específicas sobre \lstinline{SS
 para que el bot ignore el certificado del servidor.
 Si no se añaden estas líneas, nos es imposible ejecutar el bot con exito.
 
-TODO: Imagen
+TODO: Imagen613
 
 Finalmente, escribimos un fichero \lstinline{lanza-bot.sh} con el código necesario
 para lanzar el contenedor del bot e iniciar el programa con los parámetros adecuados.
 
 Aquí se muestra un ejemplo de interacción con el bot:
 
-TODO: Imagen
+TODO: Imagen615
+
+No obstante, al enviar el mensaje \verb#=log(16)#
+el bot no sabe qué hacer, por lo que la función \verb#eval#
+que utilizamos para resolver las operaciones no tiene todas
+las funciones matemáticas definidas.
+
+TODO: Imagen616
