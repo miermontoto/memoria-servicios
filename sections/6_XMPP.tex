@@ -39,16 +39,30 @@ En la distribución de Linux utilizada para instalar el cliente, Debian 12 Bookw
 se han instalado los paquetes del repositorio oficial \italic{stable}
 \lstinline{pidgin 2.14.12-1} y \lstinline{pidgin-data 2.14.12-1}.
 
-TODO: Imagen610
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{6/Imagen610.png}
+	\captionof{figure}{Paquetes a instalar en Debian 12 Bookworm}\label{fig:6/1}
+\end{minipage}
+
+Mediante las herramientas de desarrollador, se aprecia que se descargan fragmentos del vídeo
 
 Hacemos login como ambos usuarios y los añadimos como amigos.
 De ahora en adelante, será posible que estos dos usuarios chateen entre ellos.
 
-TODO: Imagen611
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{6/Imagen611.png}
+	\captionof{figure}{Login con uno de los usuarios}\label{fig:6/2}
+\end{minipage}
 
 Estos dos usuarios se comunican utilizando el programa.
 
-TODO: Imagen613
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{6/Imagen613.png}
+	\captionof{figure}{Chat entre dos usuarios}\label{fig:6/3}
+\end{minipage}
 
 \subsection{Protocolo XMPP}
 
@@ -57,11 +71,19 @@ Podemos ver las estrofas del \lstinline{ping} que envía Pidgin periódicamente.
 También se ven los cambios de estado con la \italic{stanza} presence.
 Finalmente, observamos \italic{stanzas} recibidas al enviar un mensaje.
 
-TODO: Imagen612
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{6/Imagen612.png}
+	\captionof{figure}{Mensajes entre dos usuarios}\label{fig:6/4}
+\end{minipage}
 
 Igual sucede cuando dos usuarios se subscriben a las notificaciones.
 
-TODO: Imagen614
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{6/Imagen614.png}
+	\captionof{figure}{Subscripción de un usuario a otro}\label{fig:6/5}
+\end{minipage}
 
 \subsection{Bot XMPP}
 
@@ -94,18 +116,24 @@ Hemos tenido que añadir dos líneas de código específicas sobre \lstinline{SS
 para que el bot ignore el certificado del servidor.
 Si no se añaden estas líneas, nos es imposible ejecutar el bot con exito.
 
-TODO: Imagen613
-
 Finalmente, escribimos un fichero \lstinline{lanza-bot.sh} con el código necesario
 para lanzar el contenedor del bot e iniciar el programa con los parámetros adecuados.
 
 Aquí se muestra un ejemplo de interacción con el bot:
 
-TODO: Imagen615
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{6/Imagen615.png}
+	\captionof{figure}{Comunicación con el bot}\label{fig:6/6}
+\end{minipage}
 
 No obstante, al enviar el mensaje \verb#=log(16)#
 el bot no sabe qué hacer, por lo que la función \verb#eval#
 que utilizamos para resolver las operaciones no tiene todas
 las funciones matemáticas definidas.
 
-TODO: Imagen616
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.8\textwidth]{6/Imagen616.png}
+	\captionof{figure}{Excepción en el bot al usar $log$}\label{fig:6/7}
+\end{minipage}
