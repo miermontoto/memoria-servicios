@@ -122,7 +122,54 @@ La única diferencia real con el enunciado de la práctica es que se evita pedir
 al usuario por pantalla, ya que la interfaz que resulta no funciona correctamente en versiones
 nuevas de Android (por causas desconocidas).
 
+Procedemos a modificar la ubicación de uno de los usuarios utilizando el menú de Android Studio.
+Inicialmente el usuario en cuestión se encontraba en DUMBO, NY, EEUU.
+Tras el cambio de ubicación, el usuario se encontraba en Moscú, Russia.
+Al esperar varios segundos, la interfaz de usuario del móvil emulado en Android Studio se modificó adecuadamente.
+
+A continuación se muestran capturas de pantalla del cambio
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{72/app_dumbo.png}
+	\captionof{figure}{Posición en DUMBO, NY}\label{fig:72/4}
+\end{minipage}
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{72/app_switching_rus.png}
+	\captionof{figure}{Cambiando la posición a Rusia}\label{fig:72/5}
+\end{minipage}
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{72/app_rus.png}
+	\captionof{figure}{Posición en Moscú, Rusia}\label{fig:72/6}
+\end{minipage}
+
+También se puede ver en la web
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{72/json_dumbo}
+	\captionof{figure}{Web: Posición en DUMBO, NY}\label{fig:72/7}
+\end{minipage}
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{72/json_rus}
+	\captionof{figure}{Web: Posición en Moscú, Rusia}\label{fig:72/8}
+\end{minipage}
+
 \subsection{Servicios de notificaciones}
+
+Tras realizar la preparación necesaria de Firebase, es necesario obtener el token en la aplicación Android.
+Para ello, podemos filtrar el LogCat con 'FCM' para obtener dicho token.
+
+En ese mismo filtro también se puede ver cómo la posición del amigo es modificada.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{72/FCM.png}
+	\captionof{figure}{Token}\label{fig:72/9}
+\end{minipage}
 
 \section{Conclusiones}
 Esta práctica es, sin duda, la más difícil de todas las realizadas. No por la dificultad de las
@@ -134,7 +181,7 @@ ejecutar dispositivos virtuales debido a un fallo desconocido en la emulación.
 \begin{minipage}{\linewidth}
 	\centering
 	\includegraphics[width=0.9\textwidth]{72/4.png}
-	\captionof{figure}{Error al ejecutar un dispositivo virtual}\label{fig:72/4}
+	\captionof{figure}{Error al ejecutar un dispositivo virtual}\label{fig:72/100000}
 \end{minipage}
 
 Otro error conocido es que no se logre la comunicación entre Firebase y la aplicación, pese a seguir
